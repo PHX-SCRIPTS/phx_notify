@@ -1,0 +1,78 @@
+:root{
+  --glass:rgba(18,22,34,.78);
+  --line:rgba(255,255,255,.09);
+  --text:#eef1f8;
+  --muted:#a0a8bd;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:transparent;overflow:hidden;font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+
+#stack{position:fixed;display:flex;gap:10px;width:360px;max-width:92vw;pointer-events:none}
+#stack.top-right{top:22px;right:22px;flex-direction:column;align-items:flex-end}
+#stack.top-left{top:22px;left:22px;flex-direction:column;align-items:flex-start}
+#stack.top-center{top:22px;left:50%;transform:translateX(-50%);flex-direction:column;align-items:center}
+#stack.bottom-right{bottom:22px;right:22px;flex-direction:column-reverse;align-items:flex-end}
+#stack.bottom-left{bottom:22px;left:22px;flex-direction:column-reverse;align-items:flex-start}
+#stack.bottom-center{bottom:22px;left:50%;transform:translateX(-50%);flex-direction:column-reverse;align-items:center}
+#stack.center-right{top:50%;right:22px;transform:translateY(-50%);flex-direction:column;align-items:flex-end}
+#stack.center-left{top:50%;left:22px;transform:translateY(-50%);flex-direction:column;align-items:flex-start}
+
+.toast{
+  --c:#8aa4ff;
+  position:relative;width:100%;overflow:hidden;pointer-events:auto;cursor:pointer;
+  display:flex;gap:13px;align-items:flex-start;padding:14px 16px 17px 16px;
+  background:
+    radial-gradient(120% 140% at 0% 0%, color-mix(in srgb,var(--c) 22%,transparent) 0%, transparent 55%),
+    var(--glass);
+  border:1px solid var(--line);
+  border-radius:14px;
+  backdrop-filter:blur(14px) saturate(140%);
+  box-shadow:0 14px 34px rgba(0,0,0,.45), 0 0 0 1px color-mix(in srgb,var(--c) 18%,transparent), 0 0 28px -8px color-mix(in srgb,var(--c) 60%,transparent);
+  color:var(--text);
+  animation:in .42s cubic-bezier(.2,.9,.25,1.1) both;
+}
+.toast::before{
+  content:'';position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:0 3px 3px 0;background:var(--c);
+  box-shadow:0 0 12px var(--c);
+}
+#stack.top-left .toast,#stack.bottom-left .toast,#stack.center-left .toast{animation-name:inL}
+.toast.out{animation:out .32s ease-in both}
+
+.ico{
+  flex:none;width:38px;height:38px;border-radius:11px;display:grid;place-items:center;
+  background:color-mix(in srgb,var(--c) 18%,transparent);
+  border:1px solid color-mix(in srgb,var(--c) 40%,transparent);
+  color:var(--c);font-size:19px;
+}
+.ico svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.toast.pop .ico{animation:pop .5s .1s cubic-bezier(.3,1.6,.5,1) both}
+
+.body{min-width:0;flex:1}
+.title{font-size:14px;font-weight:650;letter-spacing:.1px;line-height:1.25}
+.msg{margin-top:3px;font-size:13px;line-height:1.4;color:var(--muted);overflow-wrap:anywhere}
+.msg b{color:var(--text);font-weight:650}
+.msg:empty{display:none}
+
+.pbar{margin-top:9px;height:5px;border-radius:5px;background:rgba(255,255,255,.08);overflow:hidden}
+.pbar i{display:block;height:100%;width:0;border-radius:5px;background:linear-gradient(90deg,color-mix(in srgb,var(--c) 70%,#fff),var(--c));transition:width .25s ease}
+
+.timer{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(255,255,255,.05)}
+.timer i{display:block;height:100%;background:var(--c);opacity:.85;transform-origin:left;animation:shrink linear forwards;animation-duration:var(--d,5s)}
+.toast:hover .timer i{animation-play-state:paused}
+
+.t-success{--c:#34d399}
+.t-error{--c:#fb7185}
+.t-info{--c:#7aa2ff}
+.t-warning{--c:#fbbf24}
+.t-police{--c:#60a5fa}
+.t-ambulance{--c:#f87171}
+.t-money{--c:#4ade80}
+.t-ticket{--c:#ff8a5c}
+
+@keyframes in{from{opacity:0;transform:translateX(46px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes inL{from{opacity:0;transform:translateX(-46px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes out{to{opacity:0;transform:translateX(30px) scale(.94);filter:blur(3px)}}
+@keyframes pop{from{transform:scale(.4) rotate(-20deg);opacity:0}to{transform:none;opacity:1}}
+@keyframes shrink{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+
+@media (prefers-reduced-motion:reduce){.toast,.toast.pop .ico{animation-duration:.01s}}
